@@ -364,18 +364,17 @@ function ResearchSection({ researchRef }: { researchRef: React.RefObject<HTMLDiv
 }
 
 // ---- Courses data (from official transcript) ----
-// Highlighted core CS/Finance courses from the transcript
+// Core CS/Finance courses only, sorted by score descending
 const courses = [
   { name: "数据库课程设计", score: 100, tag: "CS" },
   { name: "Python数据分析", score: 98, tag: "CS" },
   { name: "高级语言程序设计(C++)", score: 97, tag: "CS" },
   { name: "数字逻辑", score: 97, tag: "CS" },
-  { name: "中国近现代史纲要", score: 93, tag: "通识" },
+  { name: "Econometrics", score: 97, tag: "金融" },
   { name: "金融学原理", score: 95, tag: "金融" },
   { name: "数据结构", score: 95, tag: "CS" },
-  { name: "计算机组成与体系结构", score: 90, tag: "CS" },
-  { name: "Econometrics", score: 97, tag: "金融" },
   { name: "离散数学", score: 91, tag: "CS" },
+  { name: "计算机组成与体系结构", score: 90, tag: "CS" },
   { name: "操作系统", score: 90, tag: "CS" },
   { name: "计算机网络", score: 89, tag: "CS" },
 ];
@@ -396,8 +395,105 @@ const honors = [
   "星级志愿者",
 ];
 
+// ---- Transcript semester data ----
+const transcriptSemesters = [
+  {
+    term: "2023-2024学年第1学期",
+    courses: [
+      { name: "体育（一）", type: "必修", credit: 1.0, score: 90 },
+      { name: "中华人民共和国史", type: "选修", credit: 1.0, score: 78 },
+      { name: "工科数学分析（一）", type: "必修", credit: 5.0, score: 86 },
+      { name: "离散数学", type: "必修", credit: 4.0, score: 91 },
+      { name: "军事技能", type: "必修", credit: 2.0, score: "良好" },
+      { name: "经济学原理", type: "必修", credit: 4.0, score: 83 },
+      { name: "高级语言程序设计(C++)（一）", type: "必修", credit: 3.5, score: 97 },
+      { name: "金融科技概论", type: "必修", credit: 1.0, score: 89 },
+      { name: "计算机科学概论", type: "必修", credit: 1.0, score: 85 },
+      { name: "习近平新时代中国特色社会主义思想概论", type: "必修", credit: 3.0, score: 80 },
+      { name: "线性代数与解析几何", type: "必修", credit: 3.0, score: 90 },
+      { name: "信息安全导论", type: "必修", credit: 1.0, score: 91 },
+      { name: "学术英语（一）", type: "必修", credit: 3.0, score: 85 },
+      { name: "IT前沿技术", type: "必修", credit: 1.0, score: 85 },
+      { name: "ACM程序设计竞赛实验", type: "选修", credit: 1.0, score: 98 },
+      { name: "Corporate Finance", type: "必修", credit: 3.0, score: 93 },
+      { name: "计量经济学实验", type: "必修", credit: 1.0, score: 93 },
+      { name: "公募基金高质量发展与创新", type: "选修", credit: 2.0, score: 90 },
+      { name: "人工智能导论", type: "必修", credit: 2.0, score: 91 },
+      { name: "International Finance", type: "必修", credit: 3.0, score: 90 },
+      { name: "数据结构大作业", type: "必修", credit: 1.0, score: "优秀" },
+      { name: "马克思主义基本原理", type: "必修", credit: 2.5, score: 97 },
+      { name: "数据清洗实验", type: "必修", credit: 1.0, score: 96 },
+      { name: "体育（四）", type: "必修", credit: 1.0, score: 84 },
+    ],
+  },
+  {
+    term: "2023-2024学年第2学期",
+    courses: [
+      { name: "工科数学分析（二）", type: "必修", credit: 7.0, score: 88 },
+      { name: "概率论与数理统计", type: "必修", credit: 3.0, score: 90 },
+      { name: "交通运输与城市发展", type: "选修", credit: 2.0, score: 89 },
+      { name: "军事理论", type: "必修", credit: 2.0, score: 96 },
+      { name: "形体训练与形象塑造", type: "选修", credit: 2.0, score: 98 },
+      { name: "高级语言程序设计(C++)（二）", type: "必修", credit: 1.5, score: 87 },
+      { name: "会计学原理", type: "必修", credit: 3.0, score: 95 },
+      { name: "孙子兵法", type: "选修", credit: 2, score: 90 },
+      { name: "思想道德与法治", type: "必修", credit: 2.5, score: 91 },
+      { name: "高级语言程序设计大作业", type: "必修", credit: 2.0, score: 100 },
+      { name: "数据库", type: "必修", credit: 3.5, score: 89 },
+      { name: "体育（二）", type: "必修", credit: 1.0, score: 96 },
+      { name: "学术英语（二）", type: "必修", credit: 3.0, score: 85 },
+    ],
+  },
+  {
+    term: "2024-2025学年第1学期",
+    courses: [
+      { name: "中国近现代史纲要", type: "必修", credit: 2.5, score: 93 },
+      { name: "金融学原理", type: "必修", credit: 3.0, score: 95 },
+      { name: "数据结构", type: "必修", credit: 3.5, score: 95 },
+      { name: "Python数据分析", type: "必修", credit: 3.0, score: 98 },
+      { name: "电路与电子技术", type: "必修", credit: 4.0, score: 90 },
+      { name: "体育（三）", type: "必修", credit: 1.0, score: 90 },
+      { name: "Java程序设计", type: "选修", credit: 2.5, score: 83 },
+      { name: "电路与电子技术实验", type: "必修", credit: 1.0, score: 89 },
+      { name: "物流与社会", type: "选修", credit: 2.0, score: 90 },
+      { name: "马克思主义理论与实践", type: "必修", credit: 2.0, score: 92 },
+      { name: "数字逻辑", type: "必修", credit: 1.5, score: 97 },
+      { name: "统计学", type: "选修", credit: 3.0, score: 87 },
+    ],
+  },
+  {
+    term: "2024-2025学年第2学期",
+    courses: [
+      { name: "保险学原理", type: "选修", credit: 3.0, score: 91 },
+      { name: "Econometrics", type: "选修", credit: 3.0, score: 97 },
+      { name: "创新研究实践II", type: "选修", credit: 2.0, score: "优秀" },
+      { name: "计算机组成与体系结构", type: "必修", credit: 3.5, score: 90 },
+      { name: "毛泽东思想和中国特色社会主义理论体系概论", type: "必修", credit: 2.5, score: 88 },
+    ],
+  },
+  {
+    term: "2025-2026学年第1学期",
+    courses: [
+      { name: "操作系统", type: "必修", credit: 3.5, score: 90 },
+      { name: "计算机网络", type: "必修", credit: 3.5, score: 89 },
+      { name: "中国传统文化", type: "选修", credit: 2.0, score: 97 },
+      { name: "电子工艺与创新实验I", type: "必修", credit: 1.0, score: 87 },
+      { name: "数据库课程设计", type: "选修", credit: 2.0, score: 100 },
+      { name: "金融计算与优化投资", type: "必修", credit: 3.0, score: 90 },
+      { name: "期货和衍生品理论与实务", type: "必修", credit: 3.0, score: 87 },
+      { name: "高性能计算与云计算", type: "选修", credit: 2.5, score: 89 },
+      { name: "数学建模与实验", type: "选修", credit: 2.0, score: 97 },
+      { name: "证券投资分析", type: "必修", credit: 3.0, score: 93 },
+      { name: "金融工程", type: "必修", credit: 3.0, score: 83 },
+      { name: "软件工程", type: "必修", credit: 2.5, score: 89 },
+    ],
+  },
+];
+
 // ---- Transcript Modal ----
 function TranscriptModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const [activeTab, setActiveTab] = useState<"table" | "image">("table");
+
   // Close on backdrop click or Escape key
   useEffect(() => {
     if (!open) return;
@@ -405,6 +501,11 @@ function TranscriptModal({ open, onClose }: { open: boolean; onClose: () => void
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
   }, [open, onClose]);
+
+  // Reset to table tab when reopened
+  useEffect(() => {
+    if (open) setActiveTab("table");
+  }, [open]);
 
   return (
     <AnimatePresence>
@@ -434,30 +535,128 @@ function TranscriptModal({ open, onClose }: { open: boolean; onClose: () => void
               <div>
                 <h3 className="text-base font-bold text-[oklch(0.18_0.02_55)]"
                     style={{ fontFamily: "'Noto Serif SC', serif" }}>
-                  华南理工大学本科生出国材料 · 主修成绩单
+                  华南理工大学 · 主修成绩单
                 </h3>
                 <p className="text-xs text-[oklch(0.52_0.025_60)] mt-0.5">South China University of Technology · Official Transcript</p>
               </div>
-              <button
-                onClick={onClose}
-                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-[oklch(0.93_0.01_80)] transition-colors text-[oklch(0.52_0.025_60)] hover:text-[oklch(0.18_0.02_55)]"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
+              <div className="flex items-center gap-3">
+                {/* Tab switcher */}
+                <div className="flex bg-[oklch(0.93_0.01_80)] rounded-sm p-0.5 text-xs">
+                  <button
+                    onClick={() => setActiveTab("table")}
+                    className={`px-3 py-1 rounded-sm transition-all ${
+                      activeTab === "table"
+                        ? "bg-white text-[oklch(0.18_0.02_55)] shadow-sm font-medium"
+                        : "text-[oklch(0.52_0.025_60)] hover:text-[oklch(0.28_0.04_55)]"
+                    }`}
+                  >
+                    成绩表格
+                  </button>
+                  <button
+                    onClick={() => setActiveTab("image")}
+                    className={`px-3 py-1 rounded-sm transition-all ${
+                      activeTab === "image"
+                        ? "bg-white text-[oklch(0.18_0.02_55)] shadow-sm font-medium"
+                        : "text-[oklch(0.52_0.025_60)] hover:text-[oklch(0.28_0.04_55)]"
+                    }`}
+                  >
+                    原始成绩单
+                  </button>
+                </div>
+                <button
+                  onClick={onClose}
+                  className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-[oklch(0.93_0.01_80)] transition-colors text-[oklch(0.52_0.025_60)] hover:text-[oklch(0.18_0.02_55)]"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
             </div>
-            {/* Scrollable image area */}
-            <div className="overflow-auto flex-1 p-4">
-              <img
-                src={TRANSCRIPT_IMG}
-                alt="华南理工大学主修成绩单"
-                className="w-full h-auto rounded-sm border border-[oklch(0.9_0.01_80)]"
-              />
+
+            {/* Content area */}
+            <div className="overflow-auto flex-1">
+              {activeTab === "table" ? (
+                <div className="p-5 space-y-6">
+                  {transcriptSemesters.map((sem) => (
+                    <div key={sem.term}>
+                      {/* Semester heading */}
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="w-1 h-4 bg-[oklch(0.48_0.18_25)] rounded-full" />
+                        <h4 className="text-sm font-semibold text-[oklch(0.18_0.02_55)]"
+                            style={{ fontFamily: "'Noto Serif SC', serif" }}>
+                          {sem.term}
+                        </h4>
+                        <div className="flex-1 h-px bg-[oklch(0.9_0.01_80)]" />
+                        <span className="text-xs text-[oklch(0.6_0.02_60)]">
+                          {sem.courses.length} 门课程
+                        </span>
+                      </div>
+                      {/* Table */}
+                      <table className="w-full text-xs border-collapse">
+                        <thead>
+                          <tr className="bg-[oklch(0.96_0.008_80)]">
+                            <th className="text-left py-1.5 px-3 text-[oklch(0.52_0.025_60)] font-medium border border-[oklch(0.9_0.01_80)] w-[45%]">课程名称</th>
+                            <th className="text-center py-1.5 px-2 text-[oklch(0.52_0.025_60)] font-medium border border-[oklch(0.9_0.01_80)] w-[15%]">性质</th>
+                            <th className="text-center py-1.5 px-2 text-[oklch(0.52_0.025_60)] font-medium border border-[oklch(0.9_0.01_80)] w-[15%]">学分</th>
+                            <th className="text-center py-1.5 px-2 text-[oklch(0.52_0.025_60)] font-medium border border-[oklch(0.9_0.01_80)] w-[25%]">总评</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {sem.courses.map((c, i) => {
+                            const isNum = typeof c.score === "number";
+                            const score = isNum ? (c.score as number) : null;
+                            const isHigh = score !== null && score >= 95;
+                            const isMid = score !== null && score >= 90 && score < 95;
+                            return (
+                              <tr key={i} className={i % 2 === 0 ? "bg-white" : "bg-[oklch(0.985_0.005_80)]"}
+                              >
+                                <td className="py-1.5 px-3 text-[oklch(0.28_0.04_55)] border border-[oklch(0.9_0.01_80)]">{c.name}</td>
+                                <td className="py-1.5 px-2 text-center text-[oklch(0.52_0.025_60)] border border-[oklch(0.9_0.01_80)]">{c.type}</td>
+                                <td className="py-1.5 px-2 text-center text-[oklch(0.52_0.025_60)] border border-[oklch(0.9_0.01_80)]">{c.credit}</td>
+                                <td className="py-1.5 px-2 text-center border border-[oklch(0.9_0.01_80)]">
+                                  <span
+                                    className="inline-block px-2 py-0.5 rounded-sm font-semibold"
+                                    style={{
+                                      fontFamily: "'Crimson Pro', Georgia, serif",
+                                      fontSize: "13px",
+                                      background: isHigh
+                                        ? "oklch(0.48 0.18 25 / 0.1)"
+                                        : isMid
+                                        ? "oklch(0.62 0.12 45 / 0.1)"
+                                        : "transparent",
+                                      color: isHigh
+                                        ? "oklch(0.42 0.18 25)"
+                                        : isMid
+                                        ? "oklch(0.45 0.12 45)"
+                                        : "oklch(0.52 0.025 60)",
+                                    }}
+                                  >
+                                    {c.score}
+                                  </span>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="p-4">
+                  <img
+                    src={TRANSCRIPT_IMG}
+                    alt="华南理工大学主修成绩单"
+                    className="w-full h-auto rounded-sm border border-[oklch(0.9_0.01_80)]"
+                  />
+                </div>
+              )}
             </div>
+
             {/* Footer */}
             <div className="px-6 py-3 border-t border-[oklch(0.9_0.01_80)] flex items-center justify-between">
-              <p className="text-xs text-[oklch(0.6_0.02_60)]">打印日期：2026-03-19 · 证明专用章</p>
+              <p className="text-xs text-[oklch(0.6_0.02_60)]">打印日期：2026-03-19 · 证明专用章 · 学号：202330372351</p>
               <button
                 onClick={onClose}
                 className="text-xs px-4 py-1.5 bg-[oklch(0.48_0.18_25)] text-white rounded-sm hover:bg-[oklch(0.42_0.18_25)] transition-colors"
