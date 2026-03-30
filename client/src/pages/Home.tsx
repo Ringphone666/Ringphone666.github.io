@@ -7,6 +7,7 @@
 import Navbar from "@/components/Navbar";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 // ---- Asset URLs ----
 const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663477503304/28667RWdKRJ6VDs2gtXxKm/hero-bg-BzTbqYG5ReqEj2DiBZUPmX.webp";
@@ -68,6 +69,296 @@ function SectionHeading({ children, en }: { children: React.ReactNode; en?: stri
         </p>
       )}
     </div>
+  );
+}
+
+// ---- Research project detailed data ----
+const researchProjects = [
+  {
+    id: "foley",
+    badge: "论文 · Interspeech 在投",
+    badgeColor: "bg-[oklch(0.48_0.18_25)] text-white",
+    role: "第二作者",
+    title: "FOLEYIMMERSIVE: DECOUPLING WHAT AND WHERE FOR VIDEO-TO-FIRST-ORDER AMBISONICS",
+    summary: "研究沉浸式视频到一阶 Ambisonics（FOA）音频生成问题，针对现有 V2A 系统中语义信息稀疏与空间-内容耦合严重的问题，构建语义增强数据集，提出解耦式两阶段生成框架，实现语义一致且空间感知的沉浸式音频生成。",
+    responsibilities: [
+      "构建语义增强数据集 YT-AMBISEM（102k clips）",
+      "基于 Qwen2.5-VL 设计自动化多模态标注流程",
+      "复现并对比 ViSAGe、Diff-Foley 等 baseline",
+      "实现 FAD、KLD、CC、AUC 等语义与空间指标评估",
+    ],
+    tags: ["Audio Generation", "Ambisonics", "Spatial Audio", "Multimodal", "Qwen2.5-VL", "V2A"],
+    bulletColor: "bg-[oklch(0.48_0.18_25)]",
+    details: {
+      background: "沉浸式音频（Ambisonics）能够为用户提供 360° 空间声场体验，是 VR/AR 内容制作的核心技术之一。然而现有的 Video-to-Audio（V2A）系统主要针对单声道或立体声输出，无法直接生成具有空间感知能力的 FOA 音频。本研究填补了这一领域的空白。",
+      innovation: [
+        "提出 What-Where 解耦框架：将音频生成任务分解为语义内容生成（What）与空间位置建模（Where）两个独立子任务，有效缓解了传统端到端方法中空间-内容耦合导致的质量下降问题",
+        "构建 YT-AMBISEM 数据集：包含 102k 个高质量视频-FOA 音频对，并利用 Qwen2.5-VL 多模态大模型自动生成细粒度语义标注，显著提升了训练数据的语义密度",
+        "两阶段生成流程：第一阶段基于视频语义生成单声道音频内容，第二阶段利用视觉空间线索预测声源方位并完成 FOA 编码，两阶段均可独立优化",
+      ],
+      metrics: [
+        { label: "数据集规模", value: "102k clips", desc: "YT-AMBISEM 语义增强数据集" },
+        { label: "评估指标", value: "FAD / KLD / CC / AUC", desc: "语义一致性 + 空间感知双维度评估" },
+        { label: "对比基线", value: "ViSAGe / Diff-Foley", desc: "与现有 SOTA 方法全面对比" },
+        { label: "投稿会议", value: "Interspeech 2025", desc: "语音与音频领域顶级国际会议" },
+      ],
+      techStack: ["Python", "PyTorch", "Qwen2.5-VL", "Diffusion Models", "Ambisonics B-Format", "FFMPEG"],
+    },
+  },
+  {
+    id: "core",
+    badge: "学生创新创业项目",
+    badgeColor: "bg-[oklch(0.35_0.06_250)] text-[oklch(0.85_0.02_250)]",
+    role: "核心成员",
+    title: "基于深度学习的多变量时间序列异常检测算法设计",
+    summary: "针对多变量时间序列异常检测中未显式建模异方差不确定性以及重构模型存在 shortcut learning 导致判别能力不足的问题，提出 CORE 框架，将重构任务分解为异方差不确定性建模与核心结构信息保持两个子任务，在多个数据集上提升 F1（最高达 2.84%）。",
+    responsibilities: [
+      "参与问题建模与方法设计，实现重构目标分解",
+      "负责模型复现与训练流程搭建",
+      "对 SFR 编码器与 Transformer 解码器结构进行实验验证",
+      "进行超参数调优与性能优化，参与实验分析",
+    ],
+    tags: ["Time Series", "Anomaly Detection", "Deep Learning", "Transformer", "CORE Framework", "F1 +2.84%"],
+    bulletColor: "bg-[oklch(0.72_0.12_75)]",
+    details: {
+      background: "工业传感器、金融交易、IT 系统监控等场景中，多变量时间序列的异常检测至关重要。现有基于重构的方法（如 Transformer-AE）存在两大缺陷：① 忽略了不同时间步、不同变量间的异方差不确定性；② 模型倾向于学习捷径（shortcut），即对异常样本也能重构良好，导致判别能力下降。",
+      innovation: [
+        "CORE 框架设计：将重构目标分解为异方差不确定性建模（Covariance-aware Reconstruction）与核心结构信息保持（Core Structure Preservation）两个子任务，通过多任务学习联合优化",
+        "SFR 编码器：设计了 Structure-aware Feature Representation 编码器，能够在特征提取阶段显式捕捉变量间的相关性结构，为后续解码提供更丰富的结构先验",
+        "异方差损失函数：引入基于高斯负对数似然的异方差损失，使模型对不同位置的重构误差赋予自适应权重，从而提升对真实异常的敏感性",
+      ],
+      metrics: [
+        { label: "F1 提升", value: "+2.84%", desc: "在最优数据集上相比基线的最大提升" },
+        { label: "验证数据集", value: "多个公开数据集", desc: "SMD、MSL、SMAP 等标准异常检测基准" },
+        { label: "核心模块", value: "SFR + Transformer", desc: "编码器-解码器架构" },
+        { label: "优化目标", value: "F1 / Precision / Recall", desc: "异常检测标准评估指标" },
+      ],
+      techStack: ["Python", "PyTorch", "Transformer", "NumPy", "Scikit-learn", "Matplotlib"],
+    },
+  },
+];
+
+// ---- ResearchSection component ----
+function ResearchSection({ researchRef }: { researchRef: React.RefObject<HTMLDivElement | null> }) {
+  const [expandedId, setExpandedId] = useState<string | null>(null);
+
+  const toggle = (id: string) => {
+    setExpandedId((prev) => (prev === id ? null : id));
+  };
+
+  return (
+    <section id="research" className="py-24 relative overflow-hidden">
+      {/* Background */}
+      <div className="absolute inset-0">
+        <img src={RESEARCH_BG} alt="" className="w-full h-full object-cover opacity-8" />
+        <div className="absolute inset-0 bg-[oklch(0.14_0.02_250/0.95)]" />
+      </div>
+
+      <div ref={researchRef} className="relative z-10 max-w-6xl mx-auto px-6">
+        <div className="fade-in-up">
+          <div className="mb-10">
+            <h2
+              className="section-heading text-2xl md:text-3xl text-[oklch(0.95_0.005_80)]"
+              style={{ fontFamily: "'Noto Serif SC', serif", fontWeight: 700 }}
+            >
+              科研经历
+            </h2>
+            <p
+              className="mt-1 ml-5 text-xs tracking-[0.2em] text-[oklch(0.6_0.02_250)] uppercase font-light"
+              style={{ fontFamily: "'Crimson Pro', Georgia, serif", fontStyle: "italic" }}
+            >
+              Research Experience
+            </p>
+          </div>
+        </div>
+
+        <div className="space-y-6">
+          {researchProjects.map((proj, i) => (
+            <div
+              key={proj.id}
+              className="fade-in-up"
+              style={{ transitionDelay: `${i * 0.15}s` }}
+            >
+              {/* Card header */}
+              <div className="bg-[oklch(1_0.005_80/0.06)] border border-[oklch(1_0_0/0.12)] rounded-sm backdrop-blur-sm">
+                <div className="p-8">
+                  <div className="flex flex-wrap items-start justify-between gap-4 mb-5">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-2 flex-wrap">
+                        <span className={`text-xs px-2 py-0.5 rounded-sm font-medium ${proj.badgeColor}`}>
+                          {proj.badge}
+                        </span>
+                        <span className="text-xs bg-[oklch(0.72_0.12_75/0.3)] text-[oklch(0.85_0.08_75)] px-2 py-0.5 rounded-sm font-medium">
+                          {proj.role}
+                        </span>
+                      </div>
+                      <h3
+                        className="text-base md:text-lg font-bold text-[oklch(0.95_0.005_80)] leading-snug"
+                        style={{ fontFamily: "'Crimson Pro', Georgia, serif" }}
+                      >
+                        {proj.title}
+                      </h3>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <h4 className="text-xs font-semibold text-[oklch(0.6_0.02_250)] uppercase tracking-wide mb-2">
+                        项目简介
+                      </h4>
+                      <p className="text-sm text-[oklch(0.78_0.01_250)] leading-relaxed">
+                        {proj.summary}
+                      </p>
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-semibold text-[oklch(0.6_0.02_250)] uppercase tracking-wide mb-2">
+                        负责工作
+                      </h4>
+                      <ul className="space-y-1.5">
+                        {proj.responsibilities.map((item) => (
+                          <li key={item} className="flex items-start gap-2 text-sm text-[oklch(0.78_0.01_250)]">
+                            <span className={`mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0 ${proj.bulletColor}`} />
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Tags */}
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {proj.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="text-xs px-2 py-0.5 rounded-sm bg-[oklch(0.3_0.04_250/0.5)] text-[oklch(0.7_0.02_250)] border border-[oklch(1_0_0/0.08)]"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Toggle button */}
+                  <div className="mt-6 pt-5 border-t border-[oklch(1_0_0/0.1)]">
+                    <button
+                      onClick={() => toggle(proj.id)}
+                      className="flex items-center gap-2 text-sm font-medium text-[oklch(0.72_0.12_75)] hover:text-[oklch(0.85_0.10_75)] transition-colors group"
+                    >
+                      <span className="w-5 h-5 rounded-full border border-[oklch(0.72_0.12_75/0.5)] flex items-center justify-center group-hover:border-[oklch(0.85_0.10_75/0.7)] transition-colors">
+                        <svg
+                          className="w-3 h-3 transition-transform duration-300"
+                          style={{ transform: expandedId === proj.id ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </span>
+                      {expandedId === proj.id ? "收起项目详情" : "查看项目详情"}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Expandable detail panel */}
+                <AnimatePresence initial={false}>
+                  {expandedId === proj.id && (
+                    <motion.div
+                      key="detail"
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+                      className="overflow-hidden"
+                    >
+                      <div className="px-8 pb-8 border-t border-[oklch(1_0_0/0.1)]">
+                        <div className="pt-6 space-y-8">
+
+                          {/* Background */}
+                          <div>
+                            <h4 className="text-xs font-semibold text-[oklch(0.6_0.02_250)] uppercase tracking-widest mb-3 flex items-center gap-2">
+                              <span className="w-4 h-px bg-[oklch(0.6_0.02_250)]" />
+                              研究背景
+                            </h4>
+                            <p className="text-sm text-[oklch(0.75_0.01_250)] leading-relaxed pl-6 border-l border-[oklch(0.48_0.18_25/0.4)]">
+                              {proj.details.background}
+                            </p>
+                          </div>
+
+                          {/* Innovations */}
+                          <div>
+                            <h4 className="text-xs font-semibold text-[oklch(0.6_0.02_250)] uppercase tracking-widest mb-3 flex items-center gap-2">
+                              <span className="w-4 h-px bg-[oklch(0.6_0.02_250)]" />
+                              核心创新点
+                            </h4>
+                            <div className="space-y-3 pl-2">
+                              {proj.details.innovation.map((item, idx) => (
+                                <div key={idx} className="flex gap-3">
+                                  <span
+                                    className="flex-shrink-0 w-5 h-5 rounded-full bg-[oklch(0.48_0.18_25/0.15)] text-[oklch(0.72_0.12_75)] text-xs flex items-center justify-center font-bold mt-0.5"
+                                    style={{ fontFamily: "'Crimson Pro', Georgia, serif" }}
+                                  >
+                                    {idx + 1}
+                                  </span>
+                                  <p className="text-sm text-[oklch(0.78_0.01_250)] leading-relaxed">{item}</p>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Metrics */}
+                          <div>
+                            <h4 className="text-xs font-semibold text-[oklch(0.6_0.02_250)] uppercase tracking-widest mb-3 flex items-center gap-2">
+                              <span className="w-4 h-px bg-[oklch(0.6_0.02_250)]" />
+                              关键成果 & 数据
+                            </h4>
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                              {proj.details.metrics.map((m) => (
+                                <div
+                                  key={m.label}
+                                  className="bg-[oklch(1_0.005_80/0.05)] border border-[oklch(1_0_0/0.1)] rounded-sm p-3 text-center"
+                                >
+                                  <p
+                                    className="text-base font-bold text-[oklch(0.85_0.08_75)] leading-tight mb-1"
+                                    style={{ fontFamily: "'Crimson Pro', Georgia, serif" }}
+                                  >
+                                    {m.value}
+                                  </p>
+                                  <p className="text-xs text-[oklch(0.55_0.01_250)] font-medium">{m.label}</p>
+                                  <p className="text-xs text-[oklch(0.48_0.01_250)] mt-0.5 leading-snug">{m.desc}</p>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Tech Stack */}
+                          <div>
+                            <h4 className="text-xs font-semibold text-[oklch(0.6_0.02_250)] uppercase tracking-widest mb-3 flex items-center gap-2">
+                              <span className="w-4 h-px bg-[oklch(0.6_0.02_250)]" />
+                              技术栈
+                            </h4>
+                            <div className="flex flex-wrap gap-2">
+                              {proj.details.techStack.map((tech) => (
+                                <span
+                                  key={tech}
+                                  className="text-xs px-3 py-1 rounded-sm bg-[oklch(0.25_0.04_250/0.6)] text-[oklch(0.8_0.02_250)] border border-[oklch(1_0_0/0.12)] font-medium"
+                                >
+                                  {tech}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -360,150 +651,7 @@ export default function Home() {
       </section>
 
       {/* ===== RESEARCH SECTION ===== */}
-      <section id="research" className="py-24 relative overflow-hidden">
-        {/* Background */}
-        <div className="absolute inset-0">
-          <img src={RESEARCH_BG} alt="" className="w-full h-full object-cover opacity-8" />
-          <div className="absolute inset-0 bg-[oklch(0.14_0.02_250/0.95)]" />
-        </div>
-
-        <div ref={researchRef} className="relative z-10 max-w-6xl mx-auto px-6">
-          <div className="fade-in-up">
-            <div className="mb-10">
-              <h2 className="section-heading text-2xl md:text-3xl text-[oklch(0.95_0.005_80)]"
-                  style={{ fontFamily: "'Noto Serif SC', serif", fontWeight: 700 }}>
-                科研经历
-              </h2>
-              <p className="mt-1 ml-5 text-xs tracking-[0.2em] text-[oklch(0.6_0.02_250)] uppercase font-light"
-                 style={{ fontFamily: "'Crimson Pro', Georgia, serif", fontStyle: "italic" }}>
-                Research Experience
-              </p>
-            </div>
-          </div>
-
-          <div className="space-y-8">
-            {/* Research 1 */}
-            <div className="fade-in-up">
-              <div className="bg-[oklch(1_0.005_80/0.06)] border border-[oklch(1_0_0/0.12)] rounded-sm p-8 backdrop-blur-sm hover:bg-[oklch(1_0.005_80/0.10)] transition-colors">
-                <div className="flex flex-wrap items-start justify-between gap-4 mb-5">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2 flex-wrap">
-                      <span className="text-xs bg-[oklch(0.48_0.18_25)] text-white px-2 py-0.5 rounded-sm font-medium">
-                        论文 · Interspeech 在投
-                      </span>
-                      <span className="text-xs bg-[oklch(0.72_0.12_75/0.3)] text-[oklch(0.85_0.08_75)] px-2 py-0.5 rounded-sm font-medium">
-                        第二作者
-                      </span>
-                    </div>
-                    <h3 className="text-base md:text-lg font-bold text-[oklch(0.95_0.005_80)] leading-snug"
-                        style={{ fontFamily: "'Crimson Pro', Georgia, serif" }}>
-                      FOLEYIMMERSIVE: DECOUPLING WHAT AND WHERE FOR VIDEO-TO-FIRST-ORDER AMBISONICS
-                    </h3>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <h4 className="text-xs font-semibold text-[oklch(0.6_0.02_250)] uppercase tracking-wide mb-2">
-                      项目简介
-                    </h4>
-                    <p className="text-sm text-[oklch(0.78_0.01_250)] leading-relaxed">
-                      研究沉浸式视频到一阶 Ambisonics（FOA）音频生成问题，针对现有 V2A 系统中语义信息稀疏与空间-内容耦合严重的问题，构建语义增强数据集，提出解耦式两阶段生成框架，实现语义一致且空间感知的沉浸式音频生成。
-                    </p>
-                  </div>
-                  <div>
-                    <h4 className="text-xs font-semibold text-[oklch(0.6_0.02_250)] uppercase tracking-wide mb-2">
-                      负责工作
-                    </h4>
-                    <ul className="space-y-1.5">
-                      {[
-                        "构建语义增强数据集 YT-AMBISEM（102k clips）",
-                        "基于 Qwen2.5-VL 设计自动化多模态标注流程",
-                        "复现并对比 ViSAGe、Diff-Foley 等 baseline",
-                        "实现 FAD、KLD、CC、AUC 等语义与空间指标评估",
-                      ].map((item) => (
-                        <li key={item} className="flex items-start gap-2 text-sm text-[oklch(0.78_0.01_250)]">
-                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-[oklch(0.48_0.18_25)] flex-shrink-0" />
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-
-                {/* Tags */}
-                <div className="mt-5 flex flex-wrap gap-2">
-                  {["Audio Generation", "Ambisonics", "Spatial Audio", "Multimodal", "Qwen2.5-VL", "V2A"].map((tag) => (
-                    <span key={tag} className="text-xs px-2 py-0.5 rounded-sm bg-[oklch(0.3_0.04_250/0.5)] text-[oklch(0.7_0.02_250)] border border-[oklch(1_0_0/0.08)]">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Research 2 */}
-            <div className="fade-in-up" style={{ transitionDelay: "0.15s" }}>
-              <div className="bg-[oklch(1_0.005_80/0.06)] border border-[oklch(1_0_0/0.12)] rounded-sm p-8 backdrop-blur-sm hover:bg-[oklch(1_0.005_80/0.10)] transition-colors">
-                <div className="flex flex-wrap items-start justify-between gap-4 mb-5">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2 flex-wrap">
-                      <span className="text-xs bg-[oklch(0.35_0.06_250)] text-[oklch(0.85_0.02_250)] px-2 py-0.5 rounded-sm font-medium">
-                        学生创新创业项目
-                      </span>
-                      <span className="text-xs bg-[oklch(0.72_0.12_75/0.3)] text-[oklch(0.85_0.08_75)] px-2 py-0.5 rounded-sm font-medium">
-                        核心成员
-                      </span>
-                    </div>
-                    <h3 className="text-base md:text-lg font-bold text-[oklch(0.95_0.005_80)] leading-snug"
-                        style={{ fontFamily: "'Crimson Pro', Georgia, serif" }}>
-                      基于深度学习的多变量时间序列异常检测算法设计
-                    </h3>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <h4 className="text-xs font-semibold text-[oklch(0.6_0.02_250)] uppercase tracking-wide mb-2">
-                      项目简介
-                    </h4>
-                    <p className="text-sm text-[oklch(0.78_0.01_250)] leading-relaxed">
-                      针对多变量时间序列异常检测中未显式建模异方差不确定性以及重构模型存在 shortcut learning 导致判别能力不足的问题，提出 CORE 框架，将重构任务分解为异方差不确定性建模与核心结构信息保持两个子任务，在多个数据集上提升 F1（最高达 2.84%）。
-                    </p>
-                  </div>
-                  <div>
-                    <h4 className="text-xs font-semibold text-[oklch(0.6_0.02_250)] uppercase tracking-wide mb-2">
-                      负责工作
-                    </h4>
-                    <ul className="space-y-1.5">
-                      {[
-                        "参与问题建模与方法设计，实现重构目标分解",
-                        "负责模型复现与训练流程搭建",
-                        "对 SFR 编码器与 Transformer 解码器结构进行实验验证",
-                        "进行超参数调优与性能优化，参与实验分析",
-                      ].map((item) => (
-                        <li key={item} className="flex items-start gap-2 text-sm text-[oklch(0.78_0.01_250)]">
-                          <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-[oklch(0.72_0.12_75)] flex-shrink-0" />
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-
-                {/* Tags */}
-                <div className="mt-5 flex flex-wrap gap-2">
-                  {["Time Series", "Anomaly Detection", "Deep Learning", "Transformer", "CORE Framework", "F1 +2.84%"].map((tag) => (
-                    <span key={tag} className="text-xs px-2 py-0.5 rounded-sm bg-[oklch(0.3_0.04_250/0.5)] text-[oklch(0.7_0.02_250)] border border-[oklch(1_0_0/0.08)]">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <ResearchSection researchRef={researchRef} />
 
       {/* ===== AWARDS SECTION ===== */}
       <section id="awards" className="py-24 bg-[oklch(0.985_0.008_80)]">
