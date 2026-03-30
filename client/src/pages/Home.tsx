@@ -15,6 +15,7 @@ const RESEARCH_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663477503304/28
 const AWARDS_DECO = "https://d2xsxph8kpxj0f.cloudfront.net/310519663477503304/28667RWdKRJ6VDs2gtXxKm/awards-decoration-jRwuttpXpZRcVxxKwAT2Ve.webp";
 const PROFILE_DECO = "https://d2xsxph8kpxj0f.cloudfront.net/310519663477503304/28667RWdKRJ6VDs2gtXxKm/profile-decoration-As4LKdJFiARD65zYm4XsC5.webp";
 const PROFILE_PHOTO = "https://d2xsxph8kpxj0f.cloudfront.net/310519663477503304/28667RWdKRJ6VDs2gtXxKm/profile-photo_033535d8.jpg";
+const TRANSCRIPT_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663477503304/28667RWdKRJ6VDs2gtXxKm/transcript_233e0480.jpg";
 
 // ---- Animated counter ----
 function AnimatedCounter({ target, suffix = "" }: { target: number; suffix?: string }) {
@@ -362,14 +363,21 @@ function ResearchSection({ researchRef }: { researchRef: React.RefObject<HTMLDiv
   );
 }
 
-// ---- Courses data ----
+// ---- Courses data (from official transcript) ----
+// Highlighted core CS/Finance courses from the transcript
 const courses = [
-  { name: "高级语言程序设计(C++)", score: 97 },
-  { name: "Python数据分析", score: 98 },
-  { name: "数据库课程设计", score: 100 },
-  { name: "数据结构", score: 95 },
-  { name: "计算机组成与体系结构", score: 90 },
-  { name: "离散数学", score: 90 },
+  { name: "数据库课程设计", score: 100, tag: "CS" },
+  { name: "Python数据分析", score: 98, tag: "CS" },
+  { name: "高级语言程序设计(C++)", score: 97, tag: "CS" },
+  { name: "数字逻辑", score: 97, tag: "CS" },
+  { name: "中国近现代史纲要", score: 93, tag: "通识" },
+  { name: "金融学原理", score: 95, tag: "金融" },
+  { name: "数据结构", score: 95, tag: "CS" },
+  { name: "计算机组成与体系结构", score: 90, tag: "CS" },
+  { name: "Econometrics", score: 97, tag: "金融" },
+  { name: "离散数学", score: 91, tag: "CS" },
+  { name: "操作系统", score: 90, tag: "CS" },
+  { name: "计算机网络", score: 89, tag: "CS" },
 ];
 
 // ---- Awards data ----
@@ -388,11 +396,88 @@ const honors = [
   "星级志愿者",
 ];
 
+// ---- Transcript Modal ----
+function TranscriptModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  // Close on backdrop click or Escape key
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [open, onClose]);
+
+  return (
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-[oklch(0.1_0.02_55/0.85)] backdrop-blur-sm"
+            onClick={onClose}
+          />
+          {/* Modal panel */}
+          <motion.div
+            className="relative z-10 bg-[oklch(0.99_0.005_80)] rounded-sm shadow-2xl max-w-4xl w-full max-h-[90vh] flex flex-col"
+            initial={{ scale: 0.94, opacity: 0, y: 20 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.94, opacity: 0, y: 20 }}
+            transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-[oklch(0.9_0.01_80)]">
+              <div>
+                <h3 className="text-base font-bold text-[oklch(0.18_0.02_55)]"
+                    style={{ fontFamily: "'Noto Serif SC', serif" }}>
+                  华南理工大学本科生出国材料 · 主修成绩单
+                </h3>
+                <p className="text-xs text-[oklch(0.52_0.025_60)] mt-0.5">South China University of Technology · Official Transcript</p>
+              </div>
+              <button
+                onClick={onClose}
+                className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-[oklch(0.93_0.01_80)] transition-colors text-[oklch(0.52_0.025_60)] hover:text-[oklch(0.18_0.02_55)]"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            {/* Scrollable image area */}
+            <div className="overflow-auto flex-1 p-4">
+              <img
+                src={TRANSCRIPT_IMG}
+                alt="华南理工大学主修成绩单"
+                className="w-full h-auto rounded-sm border border-[oklch(0.9_0.01_80)]"
+              />
+            </div>
+            {/* Footer */}
+            <div className="px-6 py-3 border-t border-[oklch(0.9_0.01_80)] flex items-center justify-between">
+              <p className="text-xs text-[oklch(0.6_0.02_60)]">打印日期：2026-03-19 · 证明专用章</p>
+              <button
+                onClick={onClose}
+                className="text-xs px-4 py-1.5 bg-[oklch(0.48_0.18_25)] text-white rounded-sm hover:bg-[oklch(0.42_0.18_25)] transition-colors"
+              >
+                关闭
+              </button>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
 export default function Home() {
   const educationRef = useScrollAnimation();
   const researchRef = useScrollAnimation();
   const awardsRef = useScrollAnimation();
   const honorsRef = useScrollAnimation();
+  const [transcriptOpen, setTranscriptOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-[oklch(0.985_0.008_80)]">
@@ -540,6 +625,9 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ===== TRANSCRIPT MODAL ===== */}
+      <TranscriptModal open={transcriptOpen} onClose={() => setTranscriptOpen(false)} />
+
       {/* ===== EDUCATION SECTION ===== */}
       <section id="education" className="py-24 bg-[oklch(0.985_0.008_80)]">
         <div ref={educationRef} className="max-w-6xl mx-auto px-6">
@@ -597,7 +685,7 @@ export default function Home() {
                 </div>
 
                 {/* Language */}
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 mb-6">
                   <span className="text-sm text-[oklch(0.52_0.025_60)]">英语水平：</span>
                   <div className="flex gap-3">
                     <span className="text-sm font-medium text-[oklch(0.28_0.04_55)] bg-[oklch(0.93_0.018_80)] px-3 py-1 rounded-sm">
@@ -608,35 +696,69 @@ export default function Home() {
                     </span>
                   </div>
                 </div>
+
+                {/* View transcript button */}
+                <button
+                  onClick={() => setTranscriptOpen(true)}
+                  className="flex items-center gap-2 text-sm font-medium text-[oklch(0.48_0.18_25)] hover:text-[oklch(0.38_0.18_25)] transition-colors group border border-[oklch(0.48_0.18_25/0.3)] hover:border-[oklch(0.48_0.18_25/0.6)] px-4 py-2 rounded-sm"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  查看完整成绩单
+                  <svg className="w-3 h-3 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
               </div>
             </div>
 
             {/* Core courses */}
             <div className="lg:col-span-2 fade-in-up" style={{ transitionDelay: "0.15s" }}>
-              <div className="paper-card rounded-sm p-6 h-full">
-                <h4 className="text-sm font-semibold text-[oklch(0.28_0.04_55)] mb-5 tracking-wide uppercase"
-                    style={{ fontFamily: "'Crimson Pro', Georgia, serif", fontStyle: "italic" }}>
-                  核心课程成绩
-                </h4>
-                <div className="space-y-3">
+              <div className="paper-card rounded-sm p-6 h-full flex flex-col">
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="text-sm font-semibold text-[oklch(0.28_0.04_55)] tracking-wide uppercase"
+                      style={{ fontFamily: "'Crimson Pro', Georgia, serif", fontStyle: "italic" }}>
+                    核心课程成绩
+                  </h4>
+                  <div className="flex gap-1.5 text-xs">
+                    <span className="px-1.5 py-0.5 rounded-sm bg-[oklch(0.48_0.18_25/0.1)] text-[oklch(0.48_0.18_25)] border border-[oklch(0.48_0.18_25/0.2)]">CS</span>
+                    <span className="px-1.5 py-0.5 rounded-sm bg-[oklch(0.72_0.12_75/0.1)] text-[oklch(0.55_0.12_75)] border border-[oklch(0.72_0.12_75/0.2)]">金融</span>
+                  </div>
+                </div>
+                <div className="space-y-2.5 flex-1">
                   {courses.map((course) => (
                     <div key={course.name}>
                       <div className="flex justify-between items-center mb-1">
-                        <span className="text-xs text-[oklch(0.28_0.04_55)]">{course.name}</span>
-                        <span className="text-sm font-bold text-[oklch(0.48_0.18_25)]"
+                        <div className="flex items-center gap-1.5 min-w-0">
+                          <span
+                            className="flex-shrink-0 text-[10px] px-1 py-0.5 rounded-sm font-medium"
+                            style={{
+                              background: course.tag === "CS" ? "oklch(0.48 0.18 25 / 0.1)" : course.tag === "金融" ? "oklch(0.72 0.12 75 / 0.1)" : "oklch(0.85 0.01 80 / 0.5)",
+                              color: course.tag === "CS" ? "oklch(0.48 0.18 25)" : course.tag === "金融" ? "oklch(0.5 0.12 75)" : "oklch(0.52 0.025 60)",
+                              border: course.tag === "CS" ? "1px solid oklch(0.48 0.18 25 / 0.2)" : course.tag === "金融" ? "1px solid oklch(0.72 0.12 75 / 0.2)" : "1px solid oklch(0.85 0.01 80)",
+                            }}
+                          >
+                            {course.tag}
+                          </span>
+                          <span className="text-xs text-[oklch(0.28_0.04_55)] truncate">{course.name}</span>
+                        </div>
+                        <span className="flex-shrink-0 text-sm font-bold text-[oklch(0.48_0.18_25)] ml-2"
                               style={{ fontFamily: "'Crimson Pro', Georgia, serif" }}>
                           {course.score}
                         </span>
                       </div>
-                      <div className="h-1.5 bg-[oklch(0.93_0.018_80)] rounded-full overflow-hidden">
+                      <div className="h-1 bg-[oklch(0.93_0.018_80)] rounded-full overflow-hidden">
                         <div
                           className="h-full rounded-full transition-all duration-1000"
                           style={{
                             width: `${course.score}%`,
-                            background: course.score >= 98
+                            background: course.score >= 99
                               ? "oklch(0.48 0.18 25)"
-                              : course.score >= 95
+                              : course.score >= 96
                               ? "oklch(0.55 0.15 25)"
+                              : course.score >= 93
+                              ? "oklch(0.62 0.12 45)"
                               : "oklch(0.72 0.12 75)",
                           }}
                         />
@@ -644,6 +766,16 @@ export default function Home() {
                     </div>
                   ))}
                 </div>
+                {/* View all link */}
+                <button
+                  onClick={() => setTranscriptOpen(true)}
+                  className="mt-4 pt-4 border-t border-[oklch(0.9_0.01_80)] flex items-center justify-center gap-1.5 text-xs text-[oklch(0.52_0.025_60)] hover:text-[oklch(0.48_0.18_25)] transition-colors w-full"
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h10" />
+                  </svg>
+                  查看全部课程成绩
+                </button>
               </div>
             </div>
           </div>
