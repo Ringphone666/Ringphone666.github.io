@@ -15,6 +15,7 @@ const RESEARCH_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663477503304/28
 const AWARDS_DECO = "https://d2xsxph8kpxj0f.cloudfront.net/310519663477503304/28667RWdKRJ6VDs2gtXxKm/awards-decoration-jRwuttpXpZRcVxxKwAT2Ve.webp";
 const PROFILE_DECO = "https://d2xsxph8kpxj0f.cloudfront.net/310519663477503304/28667RWdKRJ6VDs2gtXxKm/profile-decoration-As4LKdJFiARD65zYm4XsC5.webp";
 const PROFILE_PHOTO = "https://d2xsxph8kpxj0f.cloudfront.net/310519663477503304/28667RWdKRJ6VDs2gtXxKm/profile-new_20facfe5.webp";
+const TRANSCRIPT_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663477503304/28667RWdKRJ6VDs2gtXxKm/transcript_233e0480.jpg";
 
 // ---- Certificate URLs ----
 const CERT_MCM = "https://d2xsxph8kpxj0f.cloudfront.net/310519663477503304/28667RWdKRJ6VDs2gtXxKm/cert-mcm_b8ac46cd.png";
@@ -22,7 +23,7 @@ const CERT_NATIONAL = "https://d2xsxph8kpxj0f.cloudfront.net/310519663477503304/
 const CERT_APMCM = "https://d2xsxph8kpxj0f.cloudfront.net/310519663477503304/28667RWdKRJ6VDs2gtXxKm/cert-apmcm_6b74da5a.png";
 const CERT_MATHORCUP = "https://d2xsxph8kpxj0f.cloudfront.net/310519663477503304/28667RWdKRJ6VDs2gtXxKm/cert-mathorcup_1cb07fb2.png";
 const CERT_DAWANQU = "https://d2xsxph8kpxj0f.cloudfront.net/310519663477503304/28667RWdKRJ6VDs2gtXxKm/cert-dawanqu_867184d1.webp";
-const TRANSCRIPT_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663477503304/28667RWdKRJ6VDs2gtXxKm/transcript_233e0480.jpg";
+const CERT_SHENZHEN = "https://d2xsxph8kpxj0f.cloudfront.net/310519663477503304/28667RWdKRJ6VDs2gtXxKm/cert-shenzhen_591ec8e9.jpg";
 
 // ---- Animated counter ----
 function AnimatedCounter({ target, suffix = "" }: { target: number; suffix?: string }) {
@@ -386,14 +387,17 @@ const courses = [
   { name: "计算机网络", score: 89, tag: "CS" },
 ];
 
-// ---- Awards data ----
+// ---- Awards data ---- (sorted by award level: 1st > 2nd > Honorable Mention; national before provincial within same level)
 const competitions = [
-  { name: "美国大学生数学建模竞赛（MCM/ICM）", level: "国家级", award: "Honorable Mention", color: "crimson", cert: CERT_MCM },
-  { name: "全国大学生数学建模竞赛", level: "省级", award: "一等奖", color: "crimson", cert: CERT_NATIONAL },
-  { name: "深圳杯数学建模挑战赛", level: "省级", award: "一等奖", color: "crimson", cert: null },
+  // 一等奖
+  { name: "全国大学生数学建模竞赛", level: "国家级", award: "一等奖", color: "crimson", cert: CERT_NATIONAL },
+  { name: '"\u5927\u6e7e\u533a\u676f"粤港澳金融数学建模竞赛', level: "省级", award: "一等奖", color: "crimson", cert: CERT_DAWANQU },
+  { name: "深圳杯数学建模挑战赛", level: "省级", award: "一等奖", color: "crimson", cert: CERT_SHENZHEN },
+  // 二等奖
   { name: "亚太地区大学生数学建模竞赛（APMCM）", level: "省级", award: "二等奖", color: "gold", cert: CERT_APMCM },
   { name: "MathorCup高校数学建模挑战赛", level: "省级", award: "二等奖", color: "gold", cert: CERT_MATHORCUP },
-  { name: '"\u5927\u6e7e\u533a\u676f"粤港澳金融数学建模竞赛', level: "省级", award: "一等奖", color: "crimson", cert: CERT_DAWANQU },
+  // Honorable Mention
+  { name: "美国大学生数学建模竞赛（MCM/ICM）", level: "国家级", award: "Honorable Mention", color: "crimson", cert: CERT_MCM },
 ];
 
 const honors = [
@@ -836,7 +840,7 @@ export default function Home() {
       {/* ===== TRANSCRIPT MODAL ===== */}
       <TranscriptModal open={transcriptOpen} onClose={() => setTranscriptOpen(false)} />
 
-      {/* Certificate Modal */}
+      {/* ===== CERTIFICATE MODAL ===== */}
       <AnimatePresence>
         {certModal.open && (
           <motion.div
@@ -857,12 +861,9 @@ export default function Home() {
               exit={{ scale: 0.94, opacity: 0, y: 20 }}
               transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
             >
-              {/* Header */}
               <div className="flex items-center justify-between px-5 py-3.5 border-b border-[oklch(0.9_0.01_80)]">
                 <div>
-                  <h3 className="text-sm font-bold text-[oklch(0.18_0.02_55)]" style={{ fontFamily: "'Noto Serif SC', serif" }}>
-                    获奖证书
-                  </h3>
+                  <h3 className="text-sm font-bold text-[oklch(0.18_0.02_55)]" style={{ fontFamily: "'Noto Serif SC', serif" }}>获奖证书</h3>
                   <p className="text-xs text-[oklch(0.52_0.025_60)] mt-0.5 max-w-xs truncate">{certModal.name}</p>
                 </div>
                 <button
@@ -874,15 +875,9 @@ export default function Home() {
                   </svg>
                 </button>
               </div>
-              {/* Image */}
               <div className="overflow-auto flex-1 p-4">
-                <img
-                  src={certModal.url}
-                  alt={certModal.name}
-                  className="w-full h-auto rounded-sm border border-[oklch(0.9_0.01_80)]"
-                />
+                <img src={certModal.url} alt={certModal.name} className="w-full h-auto rounded-sm border border-[oklch(0.9_0.01_80)]" />
               </div>
-              {/* Footer */}
               <div className="px-5 py-3 border-t border-[oklch(0.9_0.01_80)] flex justify-end">
                 <button
                   onClick={() => setCertModal(m => ({ ...m, open: false }))}
