@@ -386,6 +386,7 @@ const competitions = [
   { name: "深圳杯数学建模挑战赛", level: "省级", award: "一等奖", color: "crimson" },
   { name: "亚太地区大学生数学建模竞赛（APMCM）", level: "省级", award: "二等奖", color: "gold" },
   { name: "MathorCup高校数学建模挑战赛", level: "省级", award: "二等奖", color: "gold" },
+  { name: "\"大湾区杯\"粤港澳金融数学建模竞赛", level: "省级", award: "一等奖", color: "crimson" },
 ];
 
 const honors = [
