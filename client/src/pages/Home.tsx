@@ -14,7 +14,14 @@ const HERO_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663477503304/28667R
 const RESEARCH_BG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663477503304/28667RWdKRJ6VDs2gtXxKm/research-bg-fkCBuBuRMSQg6dJm376NxV.webp";
 const AWARDS_DECO = "https://d2xsxph8kpxj0f.cloudfront.net/310519663477503304/28667RWdKRJ6VDs2gtXxKm/awards-decoration-jRwuttpXpZRcVxxKwAT2Ve.webp";
 const PROFILE_DECO = "https://d2xsxph8kpxj0f.cloudfront.net/310519663477503304/28667RWdKRJ6VDs2gtXxKm/profile-decoration-As4LKdJFiARD65zYm4XsC5.webp";
-const PROFILE_PHOTO = "https://d2xsxph8kpxj0f.cloudfront.net/310519663477503304/28667RWdKRJ6VDs2gtXxKm/profile-photo_033535d8.jpg";
+const PROFILE_PHOTO = "https://d2xsxph8kpxj0f.cloudfront.net/310519663477503304/28667RWdKRJ6VDs2gtXxKm/profile-new_20facfe5.webp";
+
+// ---- Certificate URLs ----
+const CERT_MCM = "https://d2xsxph8kpxj0f.cloudfront.net/310519663477503304/28667RWdKRJ6VDs2gtXxKm/cert-mcm_b8ac46cd.png";
+const CERT_NATIONAL = "https://d2xsxph8kpxj0f.cloudfront.net/310519663477503304/28667RWdKRJ6VDs2gtXxKm/cert-national_51674a51.png";
+const CERT_APMCM = "https://d2xsxph8kpxj0f.cloudfront.net/310519663477503304/28667RWdKRJ6VDs2gtXxKm/cert-apmcm_6b74da5a.png";
+const CERT_MATHORCUP = "https://d2xsxph8kpxj0f.cloudfront.net/310519663477503304/28667RWdKRJ6VDs2gtXxKm/cert-mathorcup_1cb07fb2.png";
+const CERT_DAWANQU = "https://d2xsxph8kpxj0f.cloudfront.net/310519663477503304/28667RWdKRJ6VDs2gtXxKm/cert-dawanqu_867184d1.webp";
 const TRANSCRIPT_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663477503304/28667RWdKRJ6VDs2gtXxKm/transcript_233e0480.jpg";
 
 // ---- Animated counter ----
@@ -381,12 +388,12 @@ const courses = [
 
 // ---- Awards data ----
 const competitions = [
-  { name: "美国大学生数学建模竞赛（MCM/ICM）", level: "国家级", award: "Honorable Mention", color: "crimson" },
-  { name: "全国大学生数学建模竞赛", level: "省级", award: "一等奖", color: "crimson" },
-  { name: "深圳杯数学建模挑战赛", level: "省级", award: "一等奖", color: "crimson" },
-  { name: "亚太地区大学生数学建模竞赛（APMCM）", level: "省级", award: "二等奖", color: "gold" },
-  { name: "MathorCup高校数学建模挑战赛", level: "省级", award: "二等奖", color: "gold" },
-  { name: "\"大湾区杯\"粤港澳金融数学建模竞赛", level: "省级", award: "一等奖", color: "crimson" },
+  { name: "美国大学生数学建模竞赛（MCM/ICM）", level: "国家级", award: "Honorable Mention", color: "crimson", cert: CERT_MCM },
+  { name: "全国大学生数学建模竞赛", level: "省级", award: "一等奖", color: "crimson", cert: CERT_NATIONAL },
+  { name: "深圳杯数学建模挑战赛", level: "省级", award: "一等奖", color: "crimson", cert: null },
+  { name: "亚太地区大学生数学建模竞赛（APMCM）", level: "省级", award: "二等奖", color: "gold", cert: CERT_APMCM },
+  { name: "MathorCup高校数学建模挑战赛", level: "省级", award: "二等奖", color: "gold", cert: CERT_MATHORCUP },
+  { name: '"\u5927\u6e7e\u533a\u676f"粤港澳金融数学建模竞赛', level: "省级", award: "一等奖", color: "crimson", cert: CERT_DAWANQU },
 ];
 
 const honors = [
@@ -678,6 +685,7 @@ export default function Home() {
   const awardsRef = useScrollAnimation();
   const honorsRef = useScrollAnimation();
   const [transcriptOpen, setTranscriptOpen] = useState(false);
+  const [certModal, setCertModal] = useState<{ open: boolean; url: string; name: string }>({ open: false, url: "", name: "" });
 
   return (
     <div className="min-h-screen bg-[oklch(0.985_0.008_80)]">
@@ -827,6 +835,66 @@ export default function Home() {
 
       {/* ===== TRANSCRIPT MODAL ===== */}
       <TranscriptModal open={transcriptOpen} onClose={() => setTranscriptOpen(false)} />
+
+      {/* Certificate Modal */}
+      <AnimatePresence>
+        {certModal.open && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <div
+              className="absolute inset-0 bg-[oklch(0.1_0.02_55/0.85)] backdrop-blur-sm"
+              onClick={() => setCertModal(m => ({ ...m, open: false }))}
+            />
+            <motion.div
+              className="relative z-10 bg-[oklch(0.99_0.005_80)] rounded-sm shadow-2xl max-w-2xl w-full max-h-[90vh] flex flex-col"
+              initial={{ scale: 0.94, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.94, opacity: 0, y: 20 }}
+              transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between px-5 py-3.5 border-b border-[oklch(0.9_0.01_80)]">
+                <div>
+                  <h3 className="text-sm font-bold text-[oklch(0.18_0.02_55)]" style={{ fontFamily: "'Noto Serif SC', serif" }}>
+                    获奖证书
+                  </h3>
+                  <p className="text-xs text-[oklch(0.52_0.025_60)] mt-0.5 max-w-xs truncate">{certModal.name}</p>
+                </div>
+                <button
+                  onClick={() => setCertModal(m => ({ ...m, open: false }))}
+                  className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-[oklch(0.93_0.01_80)] transition-colors text-[oklch(0.52_0.025_60)] hover:text-[oklch(0.18_0.02_55)]"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+              {/* Image */}
+              <div className="overflow-auto flex-1 p-4">
+                <img
+                  src={certModal.url}
+                  alt={certModal.name}
+                  className="w-full h-auto rounded-sm border border-[oklch(0.9_0.01_80)]"
+                />
+              </div>
+              {/* Footer */}
+              <div className="px-5 py-3 border-t border-[oklch(0.9_0.01_80)] flex justify-end">
+                <button
+                  onClick={() => setCertModal(m => ({ ...m, open: false }))}
+                  className="text-xs px-4 py-1.5 bg-[oklch(0.48_0.18_25)] text-white rounded-sm hover:bg-[oklch(0.42_0.18_25)] transition-colors"
+                >
+                  关闭
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* ===== EDUCATION SECTION ===== */}
       <section id="education" className="py-24 bg-[oklch(0.985_0.008_80)]">
@@ -1026,10 +1094,21 @@ export default function Home() {
                       <p className="text-xs text-[oklch(0.52_0.025_60)] mt-0.5">{comp.level}</p>
                     </div>
                   </div>
-                  <div className="flex-shrink-0">
+                  <div className="flex-shrink-0 flex items-center gap-2">
                     <span className={comp.color === "crimson" ? "crimson-badge" : "gold-badge"}>
                       {comp.award}
                     </span>
+                    {comp.cert && (
+                      <button
+                        onClick={() => setCertModal({ open: true, url: comp.cert!, name: comp.name })}
+                        className="flex items-center gap-1 text-xs px-2.5 py-1 rounded-sm border border-[oklch(0.85_0.015_80)] text-[oklch(0.42_0.08_55)] hover:border-[oklch(0.48_0.18_25)] hover:text-[oklch(0.48_0.18_25)] hover:bg-[oklch(0.48_0.18_25/0.05)] transition-all"
+                      >
+                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        证书
+                      </button>
+                    )}
                   </div>
                 </div>
               ))}
