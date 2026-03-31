@@ -777,7 +777,7 @@ export default function Home() {
                 <div className="w-px bg-[oklch(0.88_0.018_75)] self-stretch" />
                 <div className="text-center">
                   <div className="text-4xl" style={{ fontFamily: "'Crimson Pro', Georgia, serif", fontWeight: 700, color: "oklch(0.48 0.18 25)" }}>
-                    <AnimatedCounter target={5} />
+                    <AnimatedCounter target={6} />
                   </div>
                   <p className="text-xs text-[oklch(0.52_0.025_60)] mt-1">竞赛奖项</p>
                 </div>
