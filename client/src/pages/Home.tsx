@@ -85,7 +85,7 @@ function SectionHeading({ children, en }: { children: React.ReactNode; en?: stri
 const researchProjects = [
   {
     id: "foley",
-    badge: "论文 · Interspeech 在投",
+    badge: "论文 · Interspeech 已录用",
     badgeColor: "bg-[oklch(0.48_0.18_25)] text-white",
     role: "第二作者",
     title: "FOLEYIMMERSIVE: DECOUPLING WHAT AND WHERE FOR VIDEO-TO-FIRST-ORDER AMBISONICS",
@@ -109,7 +109,7 @@ const researchProjects = [
         { label: "数据集规模", value: "102k clips", desc: "YT-AMBISEM 语义增强数据集" },
         { label: "评估指标", value: "FAD / KLD / CC / AUC", desc: "语义一致性 + 空间感知双维度评估" },
         { label: "对比基线", value: "ViSAGe / Diff-Foley", desc: "与现有 SOTA 方法全面对比" },
-        { label: "投稿会议", value: "Interspeech 2025", desc: "语音与音频领域顶级国际会议" },
+        { label: "录用会议", value: "Interspeech 2025", desc: "已录用 · 语音与音频领域顶级国际会议" },
       ],
       techStack: ["Python", "PyTorch", "Qwen2.5-VL", "Diffusion Models", "Ambisonics B-Format", "FFMPEG"],
     },
@@ -745,7 +745,7 @@ export default function Home() {
                   华南理工大学 · 计算机科学与工程学院
                 </p>
                 <p className="text-sm text-[oklch(0.52_0.025_60)] leading-relaxed">
-                  金融学 + 计算机科学与技术双学位试点项目 · 本科在读
+                  金融学 + 计算机科学与技术双学位试点项目 · 本科大四在读
                 </p>
                 <p className="text-sm text-[oklch(0.52_0.025_60)] leading-relaxed">
                   专注于 AI 音频生成、时间序列异常检测等前沿研究领域
@@ -919,7 +919,7 @@ export default function Home() {
                 </div>
 
                 <p className="text-sm text-[oklch(0.28_0.04_55)] mb-6 leading-relaxed">
-                  金融学 + 计算机科学与技术双学位试点项目 · 本科
+                  金融学 + 计算机科学与技术双学位试点项目 · 本科大四在读
                 </p>
 
                 {/* Academic stats */}
