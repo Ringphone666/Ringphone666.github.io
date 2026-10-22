@@ -5,6 +5,7 @@
  * Color palette: ivory #faf8f3, ink #2c1810, crimson #c0392b, gold #d4a017
  */
 import Navbar from "@/components/Navbar";
+import FeaturedProject from "@/components/FeaturedProject";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -748,7 +749,10 @@ export default function Home() {
                   金融学 + 计算机科学与技术双学位试点项目 · 本科大四在读
                 </p>
                 <p className="text-sm text-[oklch(0.52_0.025_60)] leading-relaxed">
-                  专注于 AI 音频生成、时间序列异常检测等前沿研究领域
+                  聚焦 AI 应用工程、语音与音频智能、时间序列分析
+                </p>
+                <p className="pt-1 text-xs font-medium leading-relaxed tracking-wide text-[oklch(0.48_0.18_25)]">
+                  Python / FastAPI · React / TypeScript · LLM / 语义检索 · 流式语音
                 </p>
               </div>
 
@@ -784,7 +788,7 @@ export default function Home() {
               </div>
 
               {/* CTA buttons */}
-              <div className="flex flex-wrap gap-4 pt-2">
+              <div className="flex flex-wrap gap-3 pt-2">
                 <a
                   href="mailto:Ringphone1221@163.com"
                   className="inline-flex items-center gap-2 px-6 py-3 bg-[oklch(0.48_0.18_25)] text-[oklch(0.98_0.005_80)] text-sm font-medium rounded-sm hover:bg-[oklch(0.42_0.18_25)] transition-colors"
@@ -803,6 +807,9 @@ export default function Home() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
+                <a href="#projects" className="inline-flex items-center gap-2 px-5 py-3 text-sm font-medium text-[oklch(0.48_0.18_25)] transition-colors hover:bg-[oklch(0.48_0.18_25/0.05)]">
+                  查看工程作品 <span aria-hidden="true">↗</span>
+                </a>
               </div>
             </div>
 
@@ -1048,6 +1055,9 @@ export default function Home() {
       {/* ===== RESEARCH SECTION ===== */}
       <ResearchSection researchRef={researchRef} />
 
+      {/* ===== ENGINEERING PROJECTS ===== */}
+      <FeaturedProject />
+
       {/* ===== AWARDS SECTION ===== */}
       <section id="awards" className="py-24 bg-[oklch(0.985_0.008_80)]">
         <div ref={awardsRef} className="max-w-6xl mx-auto px-6">
@@ -1149,13 +1159,21 @@ export default function Home() {
               <h3 className="text-base font-bold text-[oklch(0.18_0.02_55)] mb-5 flex items-center gap-2"
                   style={{ fontFamily: "'Noto Serif SC', serif" }}>
                 <span className="w-1 h-5 bg-[oklch(0.48_0.18_25)] rounded-full" />
-                编程技能
+                技术栈与工程实践
               </h3>
-              <div className="flex flex-wrap gap-2">
-                {["C++", "Python", "SQL", "PyTorch", "NumPy", "Pandas", "Matplotlib", "Git"].map((skill) => (
-                  <span key={skill} className="text-xs px-2.5 py-1 bg-[oklch(0.93_0.018_80)] text-[oklch(0.28_0.04_55)] rounded-sm font-medium">
-                    {skill}
-                  </span>
+              <div className="space-y-4">
+                {[
+                  { label: "语言与数据", items: ["Python", "C++", "TypeScript", "SQL"] },
+                  { label: "全栈应用", items: ["FastAPI", "React 19", "SQLAlchemy", "WebSocket"] },
+                  { label: "AI 与检索", items: ["PyTorch", "LLM", "Embedding", "Rerank"] },
+                  { label: "工程验证", items: ["pytest", "Vitest", "Git", "GitHub Actions"] },
+                ].map((group) => (
+                  <div key={group.label}>
+                    <p className="mb-2 text-xs text-[oklch(0.52_0.025_60)]">{group.label}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {group.items.map((skill) => <span key={skill} className="text-xs px-2.5 py-1 bg-[oklch(0.93_0.018_80)] text-[oklch(0.28_0.04_55)] rounded-sm font-medium">{skill}</span>)}
+                    </div>
+                  </div>
                 ))}
               </div>
             </div>
