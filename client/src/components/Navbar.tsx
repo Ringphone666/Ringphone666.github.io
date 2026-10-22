@@ -9,6 +9,7 @@ const navItems = [
   { label: "首页", href: "#hero" },
   { label: "教育背景", href: "#education" },
   { label: "科研经历", href: "#research" },
+  { label: "工程作品", href: "#projects" },
   { label: "竞赛获奖", href: "#awards" },
   { label: "荣誉奖项", href: "#honors" },
   { label: "联系我", href: "#contact" },
@@ -74,7 +75,7 @@ export default function Navbar() {
         </button>
 
         {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-6">
+        <div className="hidden lg:flex items-center gap-6">
           {navItems.map((item) => (
             <button
               key={item.href}
@@ -88,9 +89,10 @@ export default function Navbar() {
 
         {/* Mobile menu button */}
         <button
-          className="md:hidden flex flex-col gap-1.5 p-2"
+          className="lg:hidden flex flex-col gap-1.5 p-2"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="菜单"
+          aria-expanded={menuOpen}
         >
           <span
             className={`block w-5 h-0.5 bg-[oklch(0.28_0.04_55)] transition-all duration-200 ${menuOpen ? "rotate-45 translate-y-2" : ""}`}
@@ -106,7 +108,7 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="md:hidden bg-[oklch(0.985_0.008_80/0.98)] backdrop-blur-md border-b border-[oklch(0.88_0.018_75)] px-6 py-4 flex flex-col gap-4">
+        <div className="lg:hidden bg-[oklch(0.985_0.008_80/0.98)] backdrop-blur-md border-b border-[oklch(0.88_0.018_75)] px-6 py-4 flex flex-col gap-4">
           {navItems.map((item) => (
             <button
               key={item.href}
