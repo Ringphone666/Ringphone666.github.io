@@ -1,4 +1,29 @@
-import { ArrowUpRight, AudioLines, Braces, FileCheck2, GitBranch, Github, Layers3, ShieldCheck } from "lucide-react";
+import {
+  ArrowUpRight,
+  AudioLines,
+  Braces,
+  BrainCircuit,
+  ArrowLeftRight,
+  MessagesSquare,
+  Database,
+  FileCheck2,
+  GitBranch,
+  Github,
+  Layers3,
+  PanelsTopLeft,
+  Server,
+  ShieldCheck,
+  X,
+  ZoomIn,
+} from "lucide-react";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const repository = "https://github.com/Ringphone666/talentflow";
 
@@ -6,142 +31,371 @@ const engineering = [
   {
     icon: Braces,
     number: "01",
-    title: "让模型输出有据可查",
-    stack: "LLM · Embedding · Rerank",
-    description: "将材料解析、语义检索与重排串成评估链路，以 Schema 约束输出，校验证据编号与原文引用，让判断回到具体材料和回答。",
+    title: "结构化反幻觉与细粒度证据溯源",
+    stack: "LLM · Embedding · Rerank · JSON Schema",
+    description:
+      "构建“多源文档解析 -> 混合语义检索 -> Cross-Encoder 重排”的多阶段 RAG 链路；通过强类型 Schema 约束模型输出，强制将每项评估结论绑定至候选人简历与对话原文的时间戳及段落索引，实现 AI 结论 100% 有据可查。",
   },
   {
     icon: AudioLines,
     number: "02",
-    title: "让语音链路能够回退",
-    stack: "WebSocket · Streaming ASR",
-    description: "接入流式语音识别，分段保留录音与时间信息；实时转写失败时尝试录音补转写，支持发言角色推断、人工更正与受约束追问。",
+    title: "流式语音高可用容错与降级回退机制",
+    stack: "WebSocket · Streaming ASR · 容灾降级",
+    description:
+      "基于全双工 WebSocket 接入实时流式语音识别（ASR），支持多说话人角色分离与毫秒级字幕上屏；设计断线重连与音频切片持久化机制，当实时流转写异常时自动触发异步切片补偿转写，保障面试现场零数据丢失。",
   },
   {
     icon: ShieldCheck,
     number: "03",
-    title: "让业务流程可控可追溯",
-    stack: "RBAC · Review · Audit Trail",
-    description: "用角色权限、审核状态与报告版本连接人机协同流程，在关键导出入口校验权限和复核状态，保留人工修改原因与审计记录。",
+    title: "细粒度 RBAC 权限与人机协同（HITL）审计流",
+    stack: "RBAC · 状态机 · Audit Trail · 版本控制",
+    description:
+      "设计严谨的评估报告生命周期状态机，强制执行“AI 生成初稿 -> 面试官人工复核确认 -> 锁定导出”的合规闭环；内置快照版本控制与 Diff 审计日志，完整追踪人工修正轨迹，杜绝未经确认的 AI 结论直接流向业务端。",
   },
   {
     icon: GitBranch,
     number: "04",
-    title: "让长任务与交付更可靠",
-    stack: "Background Tasks · pytest · CI",
-    description: "分层处理模型超时、有限重试与失败原因；匹配任务结合线程池和磁盘载荷支持重启恢复，以前后端回归与自动构建验证交付。",
+    title: "异步长任务调度、断点恢复与幂等保障",
+    stack: "Background Tasks · 线程池调度 · 断点续传",
+    description:
+      "针对大批量人岗匹配与长音频分析等高耗时任务，设计分层超时控制、指数退避重试与异常隔离机制；结合本地磁盘持久化载荷实现服务重启后的任务状态自愈与断点恢复，确保高负载下的系统交付稳定性。",
   },
 ];
 
 const layers = [
-  { name: "交互工作台", detail: "React 19 / TypeScript / Ant Design" },
-  { name: "业务与协同", detail: "FastAPI / WebSocket / 角色权限" },
-  { name: "模型与证据", detail: "LLM / Embedding / Rerank / 引用校验" },
-  { name: "数据与交付", detail: "SQLAlchemy / SQLite / 报告版本与导出" },
+  {
+    icon: PanelsTopLeft,
+    name: "交互工作台",
+    stack: ["React 19", "TypeScript", "Ant Design"],
+  },
+  {
+    icon: Server,
+    name: "业务与协同",
+    stack: ["FastAPI", "WebSocket", "角色权限"],
+  },
+  {
+    icon: BrainCircuit,
+    name: "模型与证据",
+    stack: ["LLM", "Embedding", "Rerank", "引用校验"],
+  },
+  {
+    icon: Database,
+    name: "数据与交付",
+    stack: ["SQLAlchemy", "SQLite", "版本与导出"],
+  },
 ];
+
+const previews = [
+  {
+    image: "workspace.jpg",
+    route: "talentflow / workspace",
+    alt: "TalentFlow 面试报告工作台，展示报告状态、复核与导出入口",
+    caption: "01 / 面试报告工作台",
+    text: "统一管理报告、复核状态与交付入口",
+  },
+  {
+    image: "evidence-report.jpg",
+    route: "talentflow / evidence",
+    alt: "TalentFlow 证据报告，展示评估维度、回答引用与人工复核",
+    caption: "02 / 证据驱动的评估报告",
+    text: "将评价关联到回答证据，支持人工修改与版本回溯",
+  },
+];
+
+function ProjectPreview({ preview }: { preview: (typeof previews)[number] }) {
+  const image = `${import.meta.env.BASE_URL}projects/talentflow/${preview.image}`;
+  return (
+    <figure className="min-w-0">
+      <Dialog>
+        <div className="browser-window">
+          <div className="browser-toolbar" aria-hidden="true">
+            <span className="browser-dot bg-[#FF5F57]" />
+            <span className="browser-dot bg-[#FEBC2E]" />
+            <span className="browser-dot bg-[#28C840]" />
+            <span className="mx-auto truncate pr-8 font-mono text-[10px] text-slate-500">
+              {preview.route}
+            </span>
+          </div>
+          <DialogTrigger asChild>
+            <button
+              type="button"
+              className="preview-trigger"
+              aria-label={`放大预览：${preview.caption}`}
+            >
+              <img
+                src={image}
+                alt={preview.alt}
+                loading="lazy"
+                decoding="async"
+                width={1440}
+                height={960}
+                className="aspect-[16/10] w-full object-cover object-top"
+              />
+              <span className="preview-zoom">
+                <ZoomIn size={14} aria-hidden="true" />
+                点击放大
+              </span>
+            </button>
+          </DialogTrigger>
+        </div>
+        <DialogContent
+          showCloseButton={false}
+          className="z-[60] max-h-[92dvh] w-[calc(100%-2rem)] max-w-6xl gap-0 overflow-auto rounded-2xl bg-white p-0 sm:max-w-6xl"
+        >
+          <div className="sticky top-0 z-10 flex items-center justify-between gap-4 border-b bg-white/95 px-5 py-4 backdrop-blur-md">
+            <div className="min-w-0">
+              <DialogTitle className="text-sm leading-relaxed">
+                {preview.caption}
+              </DialogTitle>
+              <DialogDescription className="mt-1 text-xs">
+                {preview.text}
+              </DialogDescription>
+            </div>
+            <DialogClose
+              className="flex size-10 shrink-0 items-center justify-center rounded-full border bg-slate-50 text-slate-600 transition-colors hover:bg-slate-100"
+              aria-label="关闭图片预览"
+            >
+              <X size={19} aria-hidden="true" />
+            </DialogClose>
+          </div>
+          <img
+            src={image}
+            alt={preview.alt}
+            width={1440}
+            height={960}
+            className="block h-auto w-full"
+          />
+        </DialogContent>
+      </Dialog>
+      <figcaption className="px-1 pt-3">
+        <p className="text-xs font-semibold text-slate-700">
+          {preview.caption}
+        </p>
+        <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+          {preview.text}
+        </p>
+      </figcaption>
+    </figure>
+  );
+}
 
 export default function FeaturedProject() {
   return (
-    <section id="projects" aria-labelledby="projects-heading" className="scroll-mt-20 bg-[oklch(0.96_0.012_80)] py-20 md:py-24">
+    <section
+      id="projects"
+      aria-labelledby="projects-heading"
+      className="section-space"
+    >
       <div className="mx-auto max-w-6xl px-6">
-        <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
+        <div className="section-intro">
           <div>
-            <h2 id="projects-heading" className="section-heading text-2xl text-[oklch(0.18_0.02_55)] md:text-3xl">工程作品</h2>
-            <p className="ml-5 mt-1 font-serif text-xs italic uppercase tracking-[0.2em] text-[oklch(0.52_0.025_60)]">Selected Engineering</p>
+            <p className="eyebrow">Selected engineering</p>
+            <h2
+              id="projects-heading"
+              className="section-heading text-2xl md:text-3xl"
+            >
+              工程作品
+            </h2>
           </div>
-          <p className="max-w-sm text-sm leading-relaxed text-[oklch(0.45_0.025_60)]">把模型能力接入真实业务流程，关注证据、协同与可靠交付。</p>
+          <p className="max-w-sm text-sm leading-relaxed text-muted-foreground">
+            探索大模型在垂直业务中的工程化落地，构建高可靠、可溯源、人机协同的
+            AI Native 应用架构。
+          </p>
         </div>
-
-        <article className="overflow-hidden rounded-sm border border-[oklch(0.85_0.02_75)] bg-[oklch(0.99_0.005_80)] shadow-sm">
-          <div className="grid gap-10 bg-[oklch(0.2_0.025_250)] p-6 text-white md:p-10 lg:grid-cols-[1.2fr_1fr] lg:gap-14">
+        <article
+          className="project-shell surface-card"
+          aria-labelledby="talentflow-heading"
+        >
+          <div className="project-overview">
             <div>
-              <div className="mb-5 flex flex-wrap gap-2 text-xs">
-                <span className="rounded-sm border border-[oklch(0.78_0.09_75/0.4)] bg-[oklch(0.78_0.09_75/0.1)] px-2.5 py-1 text-[oklch(0.85_0.08_75)]">实习项目 · 全栈 AI 应用</span>
-                <span className="rounded-sm border border-white/20 px-2.5 py-1 text-white/75">公开作品集</span>
+              <div className="mb-5 flex flex-wrap gap-2">
+                <span className="subject-tag subject-tag-cs">
+                  企业级实习项目 · 全栈 AI Agent 系统
+                </span>
+                <span className="neutral-tag">开源架构演示</span>
               </div>
-              <h3 className="font-serif text-4xl font-semibold tracking-tight md:text-5xl">TalentFlow</h3>
-              <p className="mt-3 text-lg font-medium text-[oklch(0.9_0.04_75)]">证据驱动的人才评估与面试 Copilot</p>
-              <p className="mt-5 text-sm leading-7 text-white/75">在实习中开发的人才评估与面试协同平台，整合双向人岗匹配、AI 结构化面试与人工面试 Copilot，贯通材料导入、模型分析、证据核验、人工复核与报告交付。</p>
-              <div className="mt-7 flex flex-wrap gap-3">
-                <a href={repository} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-sm bg-[oklch(0.85_0.08_75)] px-4 py-2.5 text-sm font-semibold text-[oklch(0.2_0.025_250)] transition-colors hover:bg-[oklch(0.92_0.06_75)]">
-                  <Github size={16} aria-hidden="true" /> 查看源码 <ArrowUpRight size={16} aria-hidden="true" />
+              <h3
+                id="talentflow-heading"
+                className="font-display text-4xl font-extrabold tracking-[-0.05em] sm:text-5xl"
+              >
+                TalentFlow
+              </h3>
+              <p className="mt-3 text-base font-semibold leading-relaxed text-slate-700">
+                基于 RAG 与证据链溯源的智能人才评估与面试 Copilot
+              </p>
+              <p className="mt-4 max-w-lg text-sm leading-7 text-muted-foreground">
+                面向招聘评估全流程打造的 AI
+                协同工作台。深度融合双向人岗语义匹配、实时语音面试 Copilot
+                与结构化评估报告生成，通过细粒度证据绑定与
+                Human-in-the-loop（人机协同）复核机制，解决大模型在严肃商业决策中的“幻觉”与不可控痛点。
+              </p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <a
+                  href={repository}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="primary-button"
+                >
+                  <Github size={16} aria-hidden="true" />
+                  查看源码
+                  <ArrowUpRight size={15} aria-hidden="true" />
                 </a>
-                <a href={`${repository}/blob/main/docs/architecture.md`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-sm border border-white/30 px-4 py-2.5 text-sm text-white/90 transition-colors hover:bg-white/10">
-                  <Layers3 size={16} aria-hidden="true" /> 架构设计 <ArrowUpRight size={16} aria-hidden="true" />
+                <a
+                  href={`${repository}/blob/main/docs/architecture.md`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="secondary-button"
+                >
+                  <Layers3 size={16} aria-hidden="true" />
+                  架构设计
+                  <ArrowUpRight size={15} aria-hidden="true" />
                 </a>
               </div>
             </div>
-
-            <div className="self-center rounded-sm border border-white/15 bg-white/5 p-5 md:p-6">
-              <div className="mb-5 flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-[oklch(0.85_0.08_75)]"><Layers3 size={15} aria-hidden="true" /> System Architecture</div>
-              <p className="mb-4 text-xs leading-relaxed text-white/60">模块化单体 · 共享材料库 · 模型服务适配</p>
-              <div className="space-y-2.5">
-                {layers.map((layer) => (
-                  <div key={layer.name} className="grid gap-1 border-l-2 border-[oklch(0.78_0.09_75/0.6)] bg-white/5 px-4 py-3">
-                    <span className="text-sm font-medium text-white/90">{layer.name}</span>
-                    <span className="text-xs leading-relaxed text-white/65">{layer.detail}</span>
-                  </div>
+            <div
+              className="architecture"
+              aria-labelledby="architecture-heading"
+            >
+              <h4
+                id="architecture-heading"
+                className="mb-1 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.16em] text-primary"
+              >
+                <Layers3 size={14} aria-hidden="true" />
+                System Architecture
+              </h4>
+              <p className="mb-4 text-[11px] leading-relaxed text-muted-foreground">
+                模块化单体 · 共享材料库 · 模型服务适配
+              </p>
+              <ol className="architecture-flow">
+                {layers.map(({ icon: Icon, name, stack }) => (
+                  <li key={name} className="architecture-layer">
+                    <Icon
+                      className="shrink-0 text-primary"
+                      size={20}
+                      aria-hidden="true"
+                    />
+                    <div className="min-w-0">
+                      <p className="text-xs font-semibold">{name}</p>
+                      <div className="mt-1.5 flex flex-wrap gap-1">
+                        {stack.map(technology => (
+                          <span key={technology} className="architecture-tag">
+                            {technology}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </li>
                 ))}
-              </div>
+              </ol>
             </div>
           </div>
-
-          <div className="grid grid-cols-1 divide-y divide-[oklch(0.88_0.018_75)] border-b border-[oklch(0.88_0.018_75)] bg-[oklch(0.97_0.01_80)] sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+          <ul
+            className="project-capabilities"
+            aria-label="TalentFlow 核心业务能力"
+          >
             {[
-              { value: "617", label: "后端回归测试通过", detail: "pytest · 权限 / 解析 / 匹配 / 面试" },
-              { value: "320", label: "前端交互测试通过", detail: "Vitest · 模拟服务与合成资料" },
-              { value: "CI Passed", label: "自动化验证通过", detail: "GitHub Actions · 测试 / 类型检查 / 构建" },
-            ].map((metric) => (
-              <div key={metric.label} className="px-6 py-5 md:px-8">
-                <p className="font-serif text-3xl font-semibold text-[oklch(0.48_0.18_25)]">{metric.value}</p>
-                <p className="mt-1 text-sm font-medium text-[oklch(0.25_0.025_55)]">{metric.label}</p>
-                <p className="mt-1 text-xs leading-relaxed text-[oklch(0.5_0.025_60)]">{metric.detail}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="p-6 md:p-10">
-            <div className="grid gap-x-10 gap-y-8 md:grid-cols-2">
-              {engineering.map(({ icon: Icon, number, title, stack, description }) => (
-                <div key={number}>
-                  <div className="mb-3 flex items-center gap-3">
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-sm bg-[oklch(0.48_0.18_25/0.07)] text-[oklch(0.48_0.18_25)]"><Icon size={18} aria-hidden="true" /></span>
-                    <h4 className="text-base font-semibold text-[oklch(0.25_0.025_55)]">{title}</h4>
-                    <span className="ml-auto font-serif text-lg text-[oklch(0.65_0.025_60)]">{number}</span>
-                  </div>
-                  <p className="mb-2 text-xs font-medium tracking-wide text-[oklch(0.48_0.18_25)]">{stack}</p>
-                  <p className="text-sm leading-7 text-[oklch(0.43_0.025_60)]">{description}</p>
+              {
+                icon: ArrowLeftRight,
+                title: "双向人岗匹配",
+                label: "岗位选才 · 人才适岗",
+                description:
+                  "围绕岗位比较候选人，也为人才匹配多个岗位；复用已确认材料，以分维度评价与匹配矩阵辅助筛选。",
+              },
+              {
+                icon: MessagesSquare,
+                title: "AI 面试协同",
+                label: "结构化面试 · 人工面试 Copilot",
+                description:
+                  "串联题目准备、语音回答、现场转写与补充提问，将已有材料和面试记录连接到同一工作台。",
+              },
+              {
+                icon: FileCheck2,
+                title: "证据驱动交付",
+                label: "原文引用 · 人工复核",
+                description:
+                  "评估关联材料片段与回答记录，保留人工修改和报告版本；复核确认后导出报告与佐证材料。",
+              },
+            ].map(({ icon: Icon, title, label, description }) => (
+              <li key={title} className="min-w-0">
+                <div className="mb-3 flex items-center gap-2.5">
+                  <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-primary">
+                    <Icon size={18} aria-hidden="true" />
+                  </span>
+                  <h4 className="text-base font-semibold tracking-tight text-foreground">
+                    {title}
+                  </h4>
                 </div>
+                <p className="text-[11px] font-medium text-primary">{label}</p>
+                <p className="mt-2 text-xs leading-6 text-muted-foreground">
+                  {description}
+                </p>
+              </li>
+            ))}
+          </ul>
+          <div className="engineering-grid">
+            {engineering.map(
+              ({ icon: Icon, number, title, stack, description }) => (
+                <div key={number} className="engineering-card">
+                  <span className="engineering-number" aria-hidden="true">
+                    {number}
+                  </span>
+                  <div className="relative flex items-center gap-2.5 pr-8">
+                    <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-primary">
+                      <Icon size={17} aria-hidden="true" />
+                    </span>
+                    <h4 className="text-sm font-semibold">{title}</h4>
+                  </div>
+                  <div className="relative mt-3 flex flex-wrap gap-1.5">
+                    {stack.split(" · ").map(technology => (
+                      <span key={technology} className="neutral-tag">
+                        {technology}
+                      </span>
+                    ))}
+                  </div>
+                  <p className="mt-3 text-xs leading-[1.85] text-muted-foreground">
+                    {description}
+                  </p>
+                </div>
+              )
+            )}
+          </div>
+          <div className="mt-6">
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+              <h4 className="flex items-center gap-2 text-sm font-semibold">
+                <FileCheck2
+                  size={16}
+                  className="text-primary"
+                  aria-hidden="true"
+                />
+                从评估工作台到证据复核
+              </h4>
+              <span className="text-[11px] text-muted-foreground">
+                数据脱敏演示环境 · 端到端业务流实录
+              </span>
+            </div>
+            <div className="grid items-start gap-5 md:grid-cols-2">
+              {previews.map(preview => (
+                <ProjectPreview key={preview.image} preview={preview} />
               ))}
             </div>
-
-            <div className="mt-10 border-t border-[oklch(0.88_0.018_75)] pt-8">
-              <div className="mb-5 flex flex-wrap items-center justify-between gap-2">
-                <h4 className="flex items-center gap-2 text-sm font-semibold text-[oklch(0.25_0.025_55)]"><FileCheck2 size={17} aria-hidden="true" /> 从评估工作台到证据复核</h4>
-                <span className="text-xs text-[oklch(0.5_0.025_60)]">虚构候选人 · 本地模拟模型演示</span>
-              </div>
-              <div className="grid items-start gap-5 md:grid-cols-2">
-                {[
-                  { image: "workspace.jpg", alt: "TalentFlow 面试报告工作台，展示报告状态、复核与导出入口", caption: "01 / 面试报告工作台", text: "统一管理报告、复核状态与交付入口" },
-                  { image: "evidence-report.jpg", alt: "TalentFlow 证据报告，展示评估维度、回答引用与人工复核", caption: "02 / 证据驱动的评估报告", text: "将评价关联到回答证据，支持人工修改与版本回溯" },
-                ].map((preview) => (
-                  <figure key={preview.image} className="overflow-hidden rounded-sm border border-[oklch(0.88_0.018_75)]">
-                    <img src={`/projects/talentflow/${preview.image}`} alt={preview.alt} loading="lazy" width={1440} height={960} className="aspect-[3/2] w-full object-cover object-top" />
-                    <figcaption className="border-t border-[oklch(0.88_0.018_75)] px-4 py-3">
-                      <p className="text-sm font-medium text-[oklch(0.28_0.04_55)]">{preview.caption}</p>
-                      <p className="mt-1 text-xs leading-relaxed text-[oklch(0.5_0.025_60)]">{preview.text}</p>
-                    </figcaption>
-                  </figure>
-                ))}
-              </div>
-            </div>
-
-            <div className="mt-7 flex flex-wrap gap-2">
-              {["Python", "FastAPI", "SQLAlchemy", "React 19", "TypeScript", "Ant Design", "WebSocket", "Embedding / Rerank", "pytest / Vitest", "GitHub Actions"].map((technology) => (
-                <span key={technology} className="rounded-sm border border-[oklch(0.86_0.018_75)] bg-[oklch(0.96_0.012_80)] px-2.5 py-1 text-xs text-[oklch(0.35_0.025_60)]">{technology}</span>
-              ))}
-            </div>
-            <p className="mt-5 text-xs leading-6 text-[oklch(0.5_0.025_60)]">公开版采用独立品牌与虚构演示资料，面向单实例运行。测试结果来自模拟服务与合成数据；真实模型、语音及 OCR 能力通过外部服务接入。</p>
+          </div>
+          <div className="mt-6 flex flex-wrap gap-1.5 border-t pt-5">
+            {[
+              "Python",
+              "FastAPI",
+              "SQLAlchemy",
+              "React 19",
+              "TypeScript",
+              "Ant Design",
+              "WebSocket",
+              "Embedding / Rerank",
+              "pytest / Vitest",
+              "GitHub Actions",
+            ].map(technology => (
+              <span key={technology} className="neutral-tag">
+                {technology}
+              </span>
+            ))}
           </div>
         </article>
       </div>
