@@ -828,84 +828,93 @@ export default function Home() {
       <FeaturedProject />
 
       {/* ===== AWARDS SECTION ===== */}
-      <section id="awards" className="section-space bg-background">
+      <section
+        id="awards"
+        aria-labelledby="awards-heading"
+        className="section-space bg-background"
+      >
         <div ref={awardsRef} className="max-w-6xl mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-start">
-            {/* Left: Decoration + heading */}
-            <div className="lg:col-span-2 fade-in-up">
-              <SectionHeading en="Competition Awards">竞赛获奖</SectionHeading>
-              <p className="mt-6 text-sm text-muted-foreground leading-relaxed max-w-xs">
-                在数学建模领域深耕，连续参加国内外顶级竞赛，荣获多项省级及国家级奖项，展现出扎实的数学建模与跨学科解决问题能力。
-              </p>
+          <div className="section-intro fade-in-up">
+            <div>
+              <p className="eyebrow">Competition awards</p>
+              <h2
+                id="awards-heading"
+                className="section-heading text-2xl md:text-3xl"
+              >
+                竞赛获奖
+              </h2>
             </div>
+            <p className="max-w-lg text-sm text-muted-foreground leading-relaxed">
+              在数学建模领域深耕，连续参加国内外顶级竞赛，荣获多项省级及国家级奖项，展现出扎实的数学建模与跨学科解决问题能力。
+            </p>
+          </div>
 
-            {/* Right: Awards list */}
-            <div className="lg:col-span-3 space-y-4">
-              {competitions.map((comp, i) => (
-                <div
-                  key={comp.name}
-                  className="fade-in-up paper-card rounded-xl p-5 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center"
-                  style={{ transitionDelay: `${i * 0.1}s` }}
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#F1F5F9] flex items-center justify-center">
-                      <span
-                        className="text-sm font-bold text-primary"
-                        style={{ fontFamily: "var(--font-display)" }}
-                      >
-                        {i + 1}
-                      </span>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-foreground leading-snug">
-                        {comp.name}
-                      </p>
-                      <p className="text-xs text-muted-foreground mt-0.5">
-                        {comp.level}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex-shrink-0 flex flex-wrap items-center gap-2">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {competitions.map((comp, i) => (
+              <article
+                key={comp.name}
+                className="fade-in-up paper-card rounded-xl p-5 flex min-w-0 flex-col gap-4"
+                style={{ transitionDelay: `${i * 0.1}s` }}
+              >
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#F1F5F9] flex items-center justify-center">
                     <span
-                      className={
-                        comp.color === "primary"
-                          ? "accent-badge"
-                          : "secondary-badge"
-                      }
+                      className="text-sm font-bold text-primary"
+                      style={{ fontFamily: "var(--font-display)" }}
                     >
-                      {comp.award}
+                      {i + 1}
                     </span>
-                    {comp.cert && (
-                      <button
-                        onClick={() =>
-                          setCertModal({
-                            open: true,
-                            url: comp.cert!,
-                            name: comp.name,
-                          })
-                        }
-                        className="flex items-center gap-1 text-xs px-2.5 py-1 rounded-xl border border-[#CBD5E1] text-[#475569] hover:border-primary hover:text-primary hover:bg-[rgba(37,99,235,0.05)] transition-all"
-                      >
-                        <svg
-                          className="w-3 h-3"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                          />
-                        </svg>
-                        证书
-                      </button>
-                    )}
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="text-sm font-semibold text-foreground leading-relaxed">
+                      {comp.name}
+                    </h3>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      {comp.level}
+                    </p>
                   </div>
                 </div>
-              ))}
-            </div>
+                <div className="mt-auto flex flex-wrap items-center justify-between gap-2">
+                  <span
+                    className={
+                      comp.color === "primary"
+                        ? "accent-badge"
+                        : "secondary-badge"
+                    }
+                  >
+                    {comp.award}
+                  </span>
+                  {comp.cert && (
+                    <button
+                      aria-label={`查看${comp.name}获奖证书`}
+                      onClick={() =>
+                        setCertModal({
+                          open: true,
+                          url: comp.cert!,
+                          name: comp.name,
+                        })
+                      }
+                      className="flex min-h-9 items-center gap-1 text-xs px-3 py-1.5 rounded-xl border border-[#CBD5E1] text-[#475569] hover:border-primary hover:text-primary hover:bg-[rgba(37,99,235,0.05)] transition-all"
+                    >
+                      <svg
+                        className="w-3 h-3"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                        />
+                      </svg>
+                      证书
+                    </button>
+                  )}
+                </div>
+              </article>
+            ))}
           </div>
         </div>
       </section>
