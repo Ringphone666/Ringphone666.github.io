@@ -828,7 +828,7 @@ export default function Home() {
       <FeaturedProject />
 
       {/* ===== AWARDS SECTION ===== */}
-      <section id="awards" className="py-24 bg-background">
+      <section id="awards" className="section-space bg-background">
         <div ref={awardsRef} className="max-w-6xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-start">
             {/* Left: Decoration + heading */}
@@ -911,7 +911,7 @@ export default function Home() {
       </section>
 
       {/* ===== HONORS SECTION ===== */}
-      <section id="honors" className="py-24 bg-[#F1F5F9]">
+      <section id="honors" className="section-space bg-[#F1F5F9]">
         <div ref={honorsRef} className="max-w-6xl mx-auto px-6">
           <div className="fade-in-up">
             <SectionHeading en="Honors & Awards">荣誉奖项</SectionHeading>
@@ -949,7 +949,7 @@ export default function Home() {
       </section>
 
       {/* ===== SKILLS SECTION ===== */}
-      <section className="py-20 bg-background">
+      <section className="section-space bg-background">
         <div className="max-w-6xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Technical Skills */}
@@ -1064,7 +1064,7 @@ export default function Home() {
       </section>
 
       {/* ===== CONTACT SECTION ===== */}
-      <section id="contact" className="py-24 bg-foreground">
+      <section id="contact" className="section-space bg-foreground">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <h2
             className="text-3xl md:text-4xl font-black text-background mb-4"
